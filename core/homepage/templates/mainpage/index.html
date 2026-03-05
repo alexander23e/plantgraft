@@ -1,0 +1,333 @@
+{% extends 'mainpage/base.html' %}
+{% load static %}
+{% block content_body %}
+    <!-- ======= Hero Section ======= -->
+    <section id="hero" class="d-flex align-items-center">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200">
+                    <h1>Bienvenido a {{ company.name|upper }}</h1>
+                    <h2>Rosas de la mejor calidad</h2>
+                    <div class="d-flex justify-content-center justify-content-lg-start">
+                        <a href="#about" class="btn-get-started scrollto">Empezar</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-in" data-aos-delay="200">
+                    <img src="{% static 'mainpage/img/rosa.png' %}" class="img-fluid animated" alt="">
+                </div>
+            </div>
+        </div>
+
+    </section><!-- End Hero -->
+
+    <main id="main">
+
+        <!-- ======= Clients Section ======= -->
+        <section id="clients" class="clients section-bg">
+            <div class="container">
+
+                <div class="row justify-content-center" data-aos="zoom-in">
+                    {% for product in products|slice:7 %}
+                        <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center">
+                            <img src="{{ product.get_image }}" class="img-fluid" alt="">
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </section><!-- End Cliens Section -->
+
+        <!-- ======= About Us Section ======= -->
+        <section id="about" class="about">
+
+            <div class="container" data-aos="fade-up">
+
+                <div class="section-title">
+                    <h2>Acerca de Nosotros</h2>
+                </div>
+
+                <div class="row content">
+                    <div class="col-lg-12">
+                        <p>
+                            {{ company.description }}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="why-us" data-aos="fade-up">
+                    <div class="row">
+
+                        <div class="col-lg-7 d-flex flex-column justify-content-center align-items-stretch order-2 order-lg-1">
+                            <div class="accordion-list">
+                                <ul>
+                                    <li>
+                                        <a data-bs-toggle="collapse" class="collapse" data-bs-target="#accordion-list-1">¿Cúal es nuestra misión? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+                                        <div id="accordion-list-1" class="collapse show" data-bs-parent=".accordion-list">
+                                            <p>
+                                                {{ company.mission }}
+                                            </p>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <a data-bs-toggle="collapse" data-bs-target="#accordion-list-2" class="collapsed">¿Cúal es nuestra visión? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+                                        <div id="accordion-list-2" class="collapse" data-bs-parent=".accordion-list">
+                                            <p>
+                                                {{ company.vision }}
+                                            </p>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <a data-bs-toggle="collapse" data-bs-target="#accordion-list-3" class="collapsed">¿Quienes somos? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+                                        <div id="accordion-list-3" class="collapse" data-bs-parent=".accordion-list">
+                                            <p>
+                                                {{ company.about_us }}
+                                            </p>
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-5 align-items-stretch order-1 order-lg-2 img" style='background-image: url("{% static 'mainpage/img/why-us.png' %}");' data-aos="zoom-in" data-aos-delay="150">&nbsp;</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        <!-- End About Us Section -->
+
+        <!-- ======= Services Section ======= -->
+        <section id="services" class="services section-bg">
+            <div class="container" data-aos="fade-up">
+
+                <div class="section-title">
+                    <h2>Servicios</h2>
+                    <p>Ofrecemos una gran variedad de Rosas de la mejor calidad</p>
+                </div>
+
+                <div class="row">
+                    {% for service in services %}
+                        <div class="col-xl-3 col-md-6 d-flex align-items-stretch mb-3" data-aos="zoom-in" data-aos-delay="{{ forloop.counter }}00">
+                            <div class="icon-box">
+                                <img src="{{ service.get_image }}" class="icon img-fluid d-block mx-auto">
+                                <h4><a href="">{{ service.name }}</a></h4>
+                                <p>{{ service.description }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        <!-- End Services Section -->
+
+        <!-- ======= Cta Section ======= -->
+        <section id="cta" class="cta">
+            <div class="container" data-aos="zoom-in">
+
+                <div class="row">
+                    <div class="col-lg-9 text-center text-lg-start">
+                        <h3>Comunicate con nosotros</h3>
+                        <p>Ponte en contacto con nosotros, queremos brindarte el mejor servicio posible.</p>
+                    </div>
+                    <div class="col-lg-3 cta-btn-container text-center">
+                        <a class="cta-btn align-middle" target="_blank" href="https://wa.me/593{{ company.mobile }}">Enviar un mensaje</a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        <!-- End Cta Section -->
+
+        <!-- ======= Portfolio Section ======= -->
+        <section id="portfolio" class="portfolio">
+            <div class="container" data-aos="fade-up">
+
+                <div class="section-title">
+                    <h2>Productos</h2>
+
+                </div>
+
+                <div class="row" data-aos="fade-up" data-aos-delay="200">
+                    {% for product in products %}
+                        <div class="col-lg-4 col-md-6 mb-3" data-aos="fade-up" data-aos-delay="{{ forloop.counter }}00">
+                            <div class="card">
+                                <img src="{{ product.get_image }}" class="card-img-top mx-auto d-block" alt="">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ product.name }}</h5>
+                                    <p class="card-text fst-italic">{{ product.description }}</p>
+                                    <hr>
+                                    <h1 class="text-center">
+                                        {% if product.get_price_promotion > 0.00 %}
+                                            <span style="text-decoration:line-through;">${{ product.price }}</span>
+                                        {% endif %}
+                                        <span class="badge rounded-pill bg-secondary">${{ product.get_price_current|floatformat:2 }}</span>
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </section>
+        <!-- End Portfolio Section -->
+
+        <!-- ======= Testimonials Section ======= -->
+        <section id="testimonials" class="testimonials team section-bg">
+            <div class="container" data-aos="fade-up">
+
+                <div class="section-title">
+                    <h2>Testimonios</h2>
+                    <p>¡Nuestros Clientes lo confirman!…</p>
+                </div>
+
+                <div class="slides-3 swiper" data-aos="fade-up" data-aos-delay="100">
+                    <div class="swiper-wrapper">
+                        {% for testimonial in testimonials %}
+                            <div class="swiper-slide">
+                                <div class="testimonial-wrap">
+                                    <div class="testimonial-item">
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{ testimonial.get_image }}" class="testimonial-img flex-shrink-0" alt="">
+                                            <div>
+                                                <h3>{{ testimonial.names }}</h3>
+                                                <h4>{{ testimonial.profession }}</h4>
+                                                <div class="stars">
+                                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p>
+                                            <i class="bi bi-quote quote-icon-left"></i>
+                                            {{ testimonial.comment }}
+                                            <i class="bi bi-quote quote-icon-right"></i>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+
+            </div>
+        </section>
+        <!-- End Testimonials Section -->
+
+        <!-- ======= Frequently Asked Questions Section ======= -->
+        <section id="faq" class="faq">
+            <div class="container" data-aos="fade-up">
+
+                <div class="section-title">
+                    <h2>Preguntas frecuentes</h2>
+                    <p>Respondemos a cualquier tipo de duda que tengas sobre nuestra empresa</p>
+                </div>
+
+                <div class="faq-list">
+                    <ul>
+                        {% for frequent_question in frequent_questions %}
+                            <li data-aos="fade-up" data-aos-delay="{{ forloop.counter }}00">
+                                <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" class="collapse" data-bs-target="#faq-list-{{ forloop.counter }}">{{ frequent_question.question }} <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+                                <div id="faq-list-{{ forloop.counter }}" class="collapse{% if forloop.first %} show{% endif %}" data-bs-parent=".faq-list">
+                                    <p>
+                                        {{ frequent_question.answer }}
+                                    </p>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+        <!-- End Frequently Asked Questions Section -->
+
+        <!-- ======= Contact Section ======= -->
+        <section id="contact" class="contact section-bg">
+            <div class="container" data-aos="fade-up">
+
+                <div class="section-title">
+                    <h2>Contactos</h2>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6 d-flex align-items-stretch">
+                        <div class="info">
+                            <div class="address mt-4">
+                                <i class="fa-solid fa-location-dot"></i>
+                                <h4>Dirección:</h4>
+                                <p>{{ company.address }}</p>
+                            </div>
+                            <div class="email">
+                                <i class="fa-solid fa-envelope"></i>
+                                <h4>Email:</h4>
+                                <p>{{ company.email }}</p>
+                            </div>
+                            <div class="phone">
+                                <i class="fa-solid fa-phone"></i>
+                                <h4>Teléfono:</h4>
+                                <p>{{ company.mobile }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mt-5 mt-lg-0 d-flex align-items-stretch">
+                        <div id="map" style="height: 330px; width: 100%;"></div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section><!-- End Contact Section -->
+
+    </main><!-- End #main -->
+
+    <div id="preloader"></div>
+{% endblock %}
+
+{% block vendor_mainpage %}
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    <!-- Vendor JS Files -->
+    <script src="{% static 'mainpage/vendor/aos/aos.js' %}"></script>
+    <script src="{% static 'mainpage/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'lib/bootstrap-4.6.0/js/jquery.min.js' %}"></script>
+    <script src="{% static 'mainpage/vendor/glightbox/js/glightbox.min.js' %}"></script>
+    <script src="{% static 'mainpage/vendor/swiper/swiper-bundle.min.js' %}"></script>
+    <script src="{% static 'mainpage/vendor/waypoints/noframework.waypoints.js' %}"></script>
+    <!-- Template Main JS File -->
+    <script src="{% static 'mainpage/js/main.js' %}"></script>
+    <script src="https://maps.google.com/maps/api/js?key=AIzaSyC8nFlMFGcAT3At__bZzkAN2oScMgudn8k&amp;libraries=places"></script>
+    <script type="application/javascript">
+        function initMap() {
+            const myLatLng = {lat: parseFloat({{ company.latitude }}), lng: parseFloat({{ company.longitude }})};
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 8,
+                center: myLatLng,
+            });
+            const marker = new google.maps.Marker({
+                position: myLatLng,
+                map,
+                title: "{{ company.name|safe }}",
+            });
+            const infowindow = new google.maps.InfoWindow({
+                content: '<p class="mb-0 pb-0">{{ company.name }}</p>',
+                ariaLabel: "Uluru",
+            });
+            marker.addListener("click", function () {
+                infowindow.open({
+                    anchor: marker,
+                    map,
+                });
+            });
+        }
+
+        $(function () {
+            initMap();
+        });
+    </script>
+{% endblock %}

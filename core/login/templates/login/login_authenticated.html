@@ -1,0 +1,40 @@
+{% extends 'login/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="row d-flex justify-content-center">
+        <div class="col-lg-5 mt-1">
+            <div class="card">
+                <div class="card-header">
+                    <p class="text-center text-icon">
+                        <span class="fa-stack fa-3x"><i class="fa-solid fa-circle fa-stack-2x"></i><i class="{{ dashboard.get_icon }} fa-stack-1x logo"></i></span>
+                    </p>
+                    <h1 class="card-title text-center p-2 m-0">Sesión activa</h1>
+                </div>
+                <div class="card-body p-4">
+                    <img src="{{ request.user.get_image }}" class="img-fluid d-block mx-auto p-0" style="width: 125px; height: 125px;" alt="User Image">
+                    <h3 class="text-center p-0">
+                        Hola {{ request.user.username }}, tienes una sesión activa.
+                        <br>
+                        ¿Deseas continuar?
+                    </h3>
+                    <hr>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <br>
+                        <a href="{% url 'dashboard' %}" class="btn btn-success">
+                            <i class="fa-solid fa-check"></i> Si, Continuar
+                        </a>
+                        <a class="btn btn-danger" href="{% url 'login_different' %}">
+                            <i class="fa-solid fa-xmark"></i> No, Cambiar de sesión
+                        </a>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <p class="fw-bold mt-2">
+                        Copyright &copy; 2022-2023 <b><a href="http://www.uagraria.edu.ec/" class="text-black">{{ dashboard.name }}</a></b>
+                        <br>Todos los derechos reservados
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'report.html' %}
+{% load static %}
+{% block head_report %}
+    <script src="{% static 'lib/highcharts-9.1.1/highcharts.js' %}" type="text/javascript"></script>
+    <script src="{% static 'lib/highcharts-9.1.1/highcharts-3d.js' %}" type="text/javascript"></script>
+    <script src="{% static 'lib/highcharts-9.1.1/modules/exporting.js' %}" type="text/javascript"></script>
+    <script src="{% static 'lib/highcharts-9.1.1/modules/data.js' %}" type="text/javascript"></script>
+    <script src="{% static 'lib/highcharts-9.1.1/modules/drilldown.js' %}" type="text/javascript"></script>
+    <script src="{% static 'lib/select2-4.0.13/js/select2.min.js' %}"></script>
+    <script src="{% static 'lib/select2-4.0.13/js/i18n/es.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'lib/select2-4.0.13/css/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'lib/select2-4.0.13/css/select2-bootstrap4.min.css' %}">
+    <script src="{% static 'lib/tempusdominus-bootstrap-4.5.37.0/js/tempusdominus-bootstrap.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'lib/tempusdominus-bootstrap-4.5.37.0/css/tempusdominus-bootstrap.css' %}"/>
+    <script src="{% static 'product_bi/js/products_inventory.js' %}" type="text/javascript"></script>
+{% endblock %}
+
+{% block content_report %}
+    <div class="card p-4">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label>{{ form.year.label }}:</label>
+                    {{ form.year }}
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>{{ form.product.label }}:</label>
+                    {{ form.product }}
+                </div>
+            </div>
+        </div>
+        <div id="chart"></div>
+    </div>
+{% endblock %}

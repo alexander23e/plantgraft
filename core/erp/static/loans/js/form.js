@@ -1,0 +1,162 @@
+var fv;
+var loans = {
+    calculateRoleDiscount: function () {
+        var valor = parseFloat($('[name="valor"]').val());
+        var quota = parseInt($('[name="quota"]').val());
+        var discount = valor / quota;
+        $('[name="role_discount"]').val(discount.toFixed(2));
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function (e) {
+    fv = FormValidation.formValidation(document.getElementById('frmForm'), {
+            locale: 'es_ES',
+            localization: FormValidation.locales.es_ES,
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                submitButton: new FormValidation.plugins.SubmitButton(),
+                bootstrap: new FormValidation.plugins.Bootstrap(),
+                icon: new FormValidation.plugins.Icon({
+                    valid: 'fa fa-check',
+                    invalid: 'fa fa-times',
+                    validating: 'fa fa-refresh',
+                }),
+            },
+            fields: {
+                date_joined: {
+                    validators: {
+                        notEmpty: {
+                            message: 'La fecha es obligatoria'
+                        },
+                        date: {
+                            format: 'YYYY-MM-DD',
+                            message: 'La fecha no es válida'
+                        }
+                    },
+                },
+                employee: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Seleccione un empleado'
+                        },
+                        remote: {
+                            url: pathname,
+                            data: function () {
+                                return {
+                                    employee: fv.form.querySelector('[name="employee"]').value,
+                                    action: 'validate_data'
+                                };
+                            },
+                            method: 'POST',
+                            headers: {
+                                'X-CSRFToken': csrftoken
+                            },
+                        }
+                    }
+                },
+                valor: {
+                    validators: {
+                        notEmpty: {},
+                        numeric: {
+                            message: 'El valor no es un número',
+                            thousandsSeparator: '',
+                            decimalSeparator: '.'
+                        }
+                    }
+                },
+                quota: {
+                    validators: {
+                        notEmpty: {},
+                        digits: {}
+                    }
+                },
+            },
+        }
+    )
+        .on('core.element.validated', function (e) {
+            if (e.valid) {
+                const groupEle = FormValidation.utils.closest(e.element, '.form-group');
+                if (groupEle) {
+                    FormValidation.utils.classSet(groupEle, {
+                        'has-success': false,
+                    });
+                }
+                FormValidation.utils.classSet(e.element, {
+                    'is-valid': false,
+                });
+            }
+            const iconPlugin = fv.getPlugin('icon');
+            const iconElement = iconPlugin && iconPlugin.icons.has(e.element) ? iconPlugin.icons.get(e.element) : null;
+            iconElement && (iconElement.style.display = 'none');
+        })
+        .on('core.validator.validated', function (e) {
+            if (!e.result.valid) {
+                const messages = [].slice.call(fv.form.querySelectorAll('[data-field="' + e.field + '"][data-validator]'));
+                messages.forEach((messageEle) => {
+                    const validator = messageEle.getAttribute('data-validator');
+                    messageEle.style.display = validator === e.validator ? 'block' : 'none';
+                });
+            }
+        })
+        .on('core.form.valid', function () {
+            submit_formdata_with_ajax_form(fv);
+        });
+});
+
+$(function () {
+
+    input_date_joined = $('input[name="date_joined"]');
+
+    $('.select2').select2({
+        theme: 'bootstrap4',
+        language: "es",
+    });
+
+    input_date_joined.datetimepicker({
+        useCurrent: false,
+        format: 'YYYY-MM-DD',
+        locale: 'es',
+        keepOpen: false,
+    });
+
+    input_date_joined.on('change.datetimepicker', function (e) {
+        fv.revalidateField('date_joined');
+    });
+
+    $('select[name="employee"]')
+        .on('change.select2', function () {
+            fv.revalidateField('employee');
+        });
+
+    $('[name="valor"]').TouchSpin({
+        min: 0.01,
+        max: 10000,
+        step: 0.01,
+        decimals: 2,
+        boostat: 5,
+        maxboostedstep: 10,
+    })
+        .on('change', function () {
+            fv.revalidateField('valor');
+            loans.calculateRoleDiscount();
+        })
+        .on('keypress', function (e) {
+            return validate_decimals($(this), e);
+        });
+
+    $('[name="quota"]').TouchSpin({
+        min: 1,
+        max: 12,
+        step: 1,
+    })
+        .on('change', function () {
+            fv.revalidateField('quota');
+            loans.calculateRoleDiscount();
+        })
+        .on('keypress', function (e) {
+            return validate_form_text('numbers', e, null);
+        });
+
+    $('i[data-field="valor"]').hide();
+    $('i[data-field="quota"]').hide();
+});

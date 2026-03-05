@@ -1,0 +1,53 @@
+{% extends 'login/base.html' %}
+{% load static %}
+{% block head_login %}
+    <script src="{% static 'lib/select2-4.0.13/js/select2.min.js' %}"></script>
+    <script src="{% static 'lib/select2-4.0.13/js/i18n/es.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'lib/select2-4.0.13/css/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'lib/select2-4.0.13/css/select2-bootstrap4.min.css' %}">
+    <script src="{% static 'lib/bootstrap-daterangepicker-3.1/js/moment.min.js' %}"></script>
+    <script src="{% static 'lib/bootstrap-daterangepicker-3.1/js/moment-with-locales.js' %}"></script>
+    <script src="{% static 'lib/tempusdominus-bootstrap-4.5.37.0/js/tempusdominus-bootstrap.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'lib/tempusdominus-bootstrap-4.5.37.0/css/tempusdominus-bootstrap.css' %}"/>
+    <script src="{% static 'mainpage/js/sign_in.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="row d-flex justify-content-center">
+        <div class="col-lg-5 mt-3">
+            <form method="post" id="frmForm" autocomplete="off" data-url="{% url 'login' %}">
+                <div class="card shadow">
+                    <div class="card-header">
+                        <p class="text-center text-icon">
+                            <span class="fa-stack fa-3x"><i class="fa-solid fa-circle fa-stack-2x"></i><i class="{{ dashboard.get_icon }} fa-stack-1x logo"></i></span>
+                        </p>
+                        <h1 class="card-title text-center p-2 m-0">Creación de una Cuenta</h1>
+                    </div>
+                    <div class="card-body p-4">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ next }}">
+                        {% for field in frmUser.visible_fields %}
+                            <div class="mb-3">
+                                <label for="{{ field.label }}" class="form-label fw-bold">{{ field.label }}:</label>
+                                {{ field }}
+                            </div>
+                        {% endfor %}
+                        {% for field in form.visible_fields %}
+                            <div class="mb-3">
+                                <label for="{{ field.label }}" class="form-label fw-bold">{{ field.label }}:</label>
+                                {{ field }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="card-footer px-5 pt-3">
+                        <div class="d-grid gap-2 mt-2 mb-3">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-sign-in-alt"></i> Registrarse
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

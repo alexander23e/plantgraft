@@ -1,0 +1,190 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'lib/bootstrap-4.6.0/css/bootstrap.min.css' %}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+
+        @page {
+            height: 180mm;
+        }
+
+        body {
+            font-family: "Roboto", "Lucida Grande", Verdana, Arial, sans-serif;
+            padding: 0;
+            margin: 0;
+            color: black;
+        }
+
+        .img-logo {
+            margin-top: 8px;
+            width: 50px;
+            height: 50px;
+            margin-bottom: 0;
+        }
+
+        .tblHeadings thead tr th {
+            border: 1px solid black !important;
+            padding: 3px;
+        }
+
+        .tblHeadings tbody tr td {
+            border: 1px solid black;
+            padding: 3px;
+        }
+
+        .border-bottom-theme {
+            border-bottom: 1px solid #6d6d6d;
+        }
+
+        #table-headings thead tr {
+            background-color: #cbcdcf;
+            border-bottom: 1px solid #6d6d6d;
+            font-size: 14px;
+        }
+
+        #table-headings tbody tr {
+            font-size: 14px;
+        }
+
+        #table-headings tbody tr:nth-child(2n+1) {
+            background-color: white;
+        }
+
+        #table-headings tbody tr:nth-child(2n) {
+            background-color: #cbcdcf;
+        }
+
+        #table-headings tbody tr:last-child {
+            background-color: white;
+        }
+
+        .content-pdf {
+            margin: 1% 1%;
+            padding: 2px 10px;
+            border: 1px solid black;
+            border-radius: 15px;
+            margin-top: 0;
+        }
+
+    </style>
+</head>
+<body>
+<div class="content-pdf">
+    <table style="width: 100%;">
+        <thead>
+        <tr>
+            <th style="width: 100%;">
+                <img alt="" src="{{ company.get_image }}" class="img-fluid d-block mx-auto img-logo">
+                <p style="font-size: 22px; text-align: center; padding: 0; margin-top: 10px;">
+                    ROL DE PAGO DEL MES DE {{ salary.get_month_display|upper }} Y DEL AÑO {{ salary.year }}
+                </p>
+            </th>
+        </tr>
+        </thead>
+    </table>
+    <br>
+    <table style="width: 100%;">
+        <tbody style="font-size: 13px;">
+        <tr class="border-bottom-theme">
+            <td style="width: 25%;"><b>Compañia:</b> {{ company.name|upper }}</td>
+            <td style="width: 25%;"><b>RUC:</b> {{ company.ruc }}</td>
+            <td style="width: 25%;"><b>Email:</b> {{ company.email }}</td>
+            <td style="width: 25%;"><b>Teléfono:</b> {{ company.mobile }}</td>
+        </tr>
+        <tr>
+            <td style="width: 25%;"><b>Empleado:</b> {{ salary.employee.names|upper }}</td>
+            <td style="width: 25%;"><b>Número de cedula:</b> {{ salary.employee.dni }}</td>
+            <td style="width: 25%;"><b>Email:</b> {{ salary.employee.email }}</td>
+            <td style="width: 25%;"><b>Teléfono:</b> {{ salary.employee.mobile }}</td>
+        </tr>
+        <tr class="border-bottom-theme">
+            <td style="width: 25%;"><b>Salario Contrato:</b> {{ salary.rmu_contract|floatformat:2 }}</td>
+            <td style="width: 25%;"><b>Días laborados:</b> {{ salary.days_work }}</td>
+            <td style="width: 25%;"><b>Salario por día:</b> {{ salary.salary_by_day|floatformat:2 }}</td>
+            <td style="width: 25%;"><b>Salario mensual:</b> {{ salary.rmu_month|floatformat:2 }}</td>
+        </tr>
+        <tr class="border-bottom-theme">
+            <td style="width: 25%;"><b>Ingresos:</b> {{ salary.ingress|floatformat:2 }}</td>
+            <td style="width: 25%;"><b>Egresos:</b> {{ salary.egress|floatformat:2 }}</td>
+            <td style="width: 25%;"><b>Dscto./Prestamo:</b> {{ salary.loan_discount|floatformat:2 }}</td>
+            <td style="width: 25%;"><b>Total a recibir:</b> {{ salary.total|floatformat:2 }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <table style="width: 100%;" id="table-headings">
+        <thead>
+        <tr>
+            <th>CODIGO</th>
+            <th>RUBRO</th>
+            <th>TIPO</th>
+            <th class="text-right">CANTIDAD</th>
+            <th class="text-right">VALOR</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for det in salary.get_ingress %}
+            <tr>
+                <td>{{ det.headings.get_number }}</td>
+                <td>{{ det.get_heading_name }}</td>
+                <td>{{ det.headings.get_type_display }}</td>
+                <td class="text-right">{{ det.valor|floatformat:2 }}</td>
+                <td class="text-right">{{ det.total|floatformat:2 }}</td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="4" class="text-right font-weight-bold">TOTAL INGRESOS</td>
+            <td class="text-right">{{ salary.ingress }}</td>
+        </tr>
+        {% for det in salary.get_egress %}
+            <tr>
+                <td>{{ det.headings.get_number }}</td>
+                <td>{{ det.get_heading_name }}</td>
+                <td>{{ det.headings.get_type_display }}</td>
+                <td class="text-right">{{ det.valor|floatformat:2 }}</td>
+                <td class="text-right">{{ det.total|floatformat:2 }}</td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="4" class="text-right font-weight-bold">TOTAL EGRESOS</td>
+            <td class="text-right">{{ salary.egress }}</td>
+        </tr>
+        <tr>
+            <td colspan="5" style="background-color: white;">
+                <p>
+                    <b>NETO A COBRAR: ${{ salary.total|floatformat:2 }}</b><br>
+                    Recibí de {{ company.name }} el monto de saldo neto establecido en este rol de pago, no
+                    teniendo nada
+                    más
+                    que reclamar judicial ni extra judicialmente, por lo que suscribo al pie de la
+                    presente.
+                </p>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <table style="width: 100%;">
+        <tr>
+            <td style="width: 50%;">
+                <p class="text-center" style="font-size: 15px;">
+                    <br><br><br>
+                    ......................................................<br>
+                    <b>Firma del Empleado</b>
+                </p>
+            </td>
+            <td style="width: 50%;">
+                <p class="text-center" style="font-size: 15px;">
+                    <br><br><br>
+                    ......................................................<br>
+                    <b>Encargado de RRHH</b>
+                </p>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

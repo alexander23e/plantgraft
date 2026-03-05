@@ -1,0 +1,19 @@
+{% extends 'list.html' %}
+{% load static %}
+{% block head_list %}
+    <script src="{% static 'testimonials/js/list.js' %}"></script>
+{% endblock %}
+
+{% block columns %}
+    <th>Número</th>
+    <th>Nombres</th>
+    <th>Profesión</th>
+    <th>Imagen</th>
+    <th>Comentario</th>
+    <th>Estado</th>
+    <th class="text-center">Opciones</th>
+{% endblock %}
+
+{% block javascript_list %}
+
+{% endblock %}

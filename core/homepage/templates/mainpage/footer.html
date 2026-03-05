@@ -1,0 +1,30 @@
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+
+    <div class="container">
+        <img alt="" src="{{ company.get_image }}" class="d-block mx-auto logo">
+        <div class="row gy-4 d-flex align-items-center justify-content-center">
+            <div class="col-lg-8 col-md-12 footer-info">
+                <a href="{% url 'index' %}" class="logo d-flex align-items-center justify-content-center mb-4">
+                    <span>{{ company.name|upper }}</span>
+                </a>
+                <p class="text-center">{{ company.description }}</p>
+                <div class="social-links d-flex mt-4 justify-content-center">
+                    {% for social_network in social_networks %}
+                        <a href="{{ social_network.url }}" target="_blank" class="{{ social_network.code }}"><i class="{{ social_network.icon }}"></i></a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <div class="copyright">
+            &copy; Copyright <strong><span>{{ company.name|upper }}</span></strong>. Todos los derechos reservados
+        </div>
+        <div class="credits">
+            Desarrollado por <a href="http://www.uagraria.edu.ec/">Universidad Politecnica Estatal Del Carchi</a>
+        </div>
+    </div>
+</footer>
+<!-- End Footer -->

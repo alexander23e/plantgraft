@@ -1,0 +1,24 @@
+{% extends 'sale/admin/list.html' %}
+{% load static %}
+{% block head_list %}
+    <script src="{% static 'lib/bootstrap-daterangepicker-3.1/js/spanish.js' %}"></script>
+    <script src="{% static 'lib/bootstrap-daterangepicker-3.1/js/daterangepicker.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'lib/bootstrap-daterangepicker-3.1/css/daterangepicker.css' %}"/>
+    <script src="{% static 'sale/client/js/list.js' %}"></script>
+{% endblock %}
+
+{% block box_footer_buttons %}
+    <div class="row">
+        <div class="col-lg-8">
+            <a href="{{ create_url }}" class="btn btn-primary btn-flat">
+                <i class="fas fa-plus"></i> Nuevo registro de una cotización/pedido
+            </a>
+            <a href="{{ list_url }}" class="btn btn-success btn-flat">
+                <i class="fas fa-sync-alt"></i> Actualizar
+            </a>
+        </div>
+        <div class="col-lg-4 text-right">
+            <h1 class="font-weight-bold total">$0.00</h1>
+        </div>
+    </div>
+{% endblock %}

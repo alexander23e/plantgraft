@@ -1,0 +1,393 @@
+{% extends 'skin.html' %}
+{% load static %}
+{% block head_body %}
+    <script src="{% static 'lib/highcharts-9.1.1/highcharts.js' %}" type="text/javascript"></script>
+    <script src="{% static 'lib/highcharts-9.1.1/highcharts-3d.js' %}" type="text/javascript"></script>
+    <script src="{% static 'lib/highcharts-9.1.1/modules/exporting.js' %}" type="text/javascript"></script>
+    <script src="{% static 'lib/highcharts-9.1.1/modules/data.js' %}" type="text/javascript"></script>
+    <script src="{% static 'lib/highcharts-9.1.1/modules/drilldown.js' %}" type="text/javascript"></script>
+{% endblock %}
+
+{% block content %}
+    {% if request.user.is_client %}
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 mt-3">
+                    <div class="card card-widget widget-user">
+                        <div class="widget-user-header bg-gradient-green" style="height: auto;">
+                            <h3 class="widget-user-username">
+                                {{ company.name }}<br>
+                                Ruc: {{ company.ruc }}
+                            </h3>
+                            <br>
+                            <h5 class="widget-user-desc" style="font-weight: normal;">
+                                <b>Bienvenido {{ request.user.names }}</b><br>
+                                Tu último acceso fue {{ request.user.last_login }}
+                            </h5>
+                        </div>
+                        <img class="img-fluid d-block mx-auto p-3" style="width: 100px; height: 100px;"
+                             src="{{ company.get_image }}" alt="User Avatar">
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-sm-6 border-right">
+                                    <div class="description-block">
+                                        <i class="fas fa-phone-volume fa-3x p-3"></i>
+                                        <h5 class="description-header font-weight-bold mb-2">
+                                            Teléfono
+                                        </h5>
+                                        <span class="description-text">
+                                            {{ company.mobile }} / {{ company.phone }}
+                                        </span>
+                                    </div>
+                                    <!-- /.description-block -->
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="description-block">
+                                        <i class="fas fa-envelope fa-3x p-3"></i>
+                                        <h5 class="description-header font-weight-bold mb-2">
+                                            Email
+                                        </h5>
+                                        <span class="description-text">
+                                            {{ company.email }}
+                                        </span>
+                                    </div>
+                                    <!-- /.description-block -->
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-6 border-right">
+                                    <div class="description-block">
+                                        <i class="fas fa-location-arrow fa-3x p-3"></i>
+                                        <h5 class="description-header font-weight-bold mb-2">
+                                            Dirección
+                                        </h5>
+                                        <span class="description-text">
+                                            {{ company.address }}
+                                        </span>
+                                    </div>
+                                    <!-- /.description-block -->
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="description-block">
+                                        <i class="fab fa-internet-explorer fa-3x p-3"></i>
+                                        <h5 class="description-header font-weight-bold mb-2">
+                                            Pagina Web
+                                        </h5>
+                                        <span class="description-text">
+                                            {{ company.website }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="card">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-3 mt-2">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-truck"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Proveedores</span>
+                            <span class="info-box-number">{{ provider }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-3 mt-2">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-user-check"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Clientes</span>
+                            <span class="info-box-number">{{ client }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix hidden-md-up"></div>
+                <div class="col-12 col-sm-6 col-md-3 mt-2">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-box"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Insumos</span>
+                            <span class="info-box-number">{{ resource }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-3 mt-2">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-success elevation-1"><i class="fa-brands fa-pagelines"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Productos</span>
+                            <span class="info-box-number">{{ product }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header border-0">
+                            <h3 class="card-title"><i class="fas fa-shopping-cart"></i> Las 10 últimas ventas</h3>
+                        </div>
+                        <div class="card-body table-responsive p-0">
+                            <table class="table table-valign-middle">
+                                <thead>
+                                <tr>
+                                    <th>Número</th>
+                                    <th>Cliente</th>
+                                    <th>Tipo</th>
+                                    <th>F.Registro</th>
+                                    <th>Subtotal</th>
+                                    <th>IVA</th>
+                                    <th>Total</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for sale in sales %}
+                                    <tr>
+                                        <td>{{ sale.get_number }}</td>
+                                        <td>{{ sale.client.user.names }}</td>
+                                        <td>{{ sale.get_type_display }}</td>
+                                        <td>{{ sale.date_joined|date:'c' }}</td>
+                                        <td class="text-center">${{ sale.subtotal|floatformat:2 }}</td>
+                                        <td class="text-center">${{ sale.total_iva|floatformat:2 }}</td>
+                                        <td class="text-center">${{ sale.total|floatformat:2 }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header border-0">
+                            <h3 class="card-title"><i class="fas fa-seedling"></i> Stock de Rosas</h3>
+                        </div>
+                        <div class="card-body table-responsive p-0">
+                            <div id="chart_stock_products" style="height: 60vh;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header border-0">
+                            <h3 class="card-title"><i class="fa-solid fa-boxes-stacked"></i> Los insumos con mayor stock</h3>
+                        </div>
+                        <div class="card-body table-responsive p-3">
+                            <div id="chart_stock_resources"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header border-0">
+                            <h3 class="card-title"><i class="fa-solid fa-shop"></i> Los Compras y Ventas del año {{ date_joined.year }}</h3>
+                        </div>
+                        <div class="card-body table-responsive p-3">
+                            <div id="chart_purchase_sale"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="application/javascript">
+            var chart = {
+                getStockProducts: function () {
+                    $.ajax({
+                        url: pathname,
+                        type: 'POST',
+                        headers: {
+                            'X-CSRFToken': csrftoken
+                        },
+                        data: {
+                            'action': 'get_graph_stock_products'
+                        },
+                        dataType: 'json',
+                        success: function (request) {
+                            if (!request.hasOwnProperty('error')) {
+                                Highcharts.chart('chart_stock_products', {
+                                    chart: {
+                                        plotBackgroundColor: null,
+                                        plotBorderWidth: null,
+                                        plotShadow: false,
+                                        type: 'pie'
+                                    },
+                                    title: {
+                                        text: ''
+                                    },
+                                    exporting: false,
+                                    tooltip: {
+                                        pointFormat: '{series.name}: <b>{point.y:.0f}</b>'
+                                    },
+                                    accessibility: {
+                                        point: {
+                                            valueSuffix: '%'
+                                        }
+                                    },
+                                    plotOptions: {
+                                        pie: {
+                                            allowPointSelect: true,
+                                            cursor: 'pointer',
+                                            dataLabels: {
+                                                enabled: true,
+                                                format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                                            }
+                                        }
+                                    },
+                                    series: [{
+                                        name: 'Stock',
+                                        colorByPoint: true,
+                                        data: request
+                                    }]
+                                });
+                                return false;
+                            }
+                            message_error(request.error);
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            message_error(errorThrown + ' ' + textStatus);
+                        }
+                    });
+                },
+                getStockResources: function () {
+                    $.ajax({
+                        url: pathname,
+                        type: 'POST',
+                        headers: {
+                            'X-CSRFToken': csrftoken
+                        },
+                        data: {
+                            'action': 'get_graph_stock_resources'
+                        },
+                        dataType: 'json',
+                        success: function (request) {
+                            if (!request.hasOwnProperty('error')) {
+                                Highcharts.chart('chart_stock_resources', {
+                                    chart: {
+                                        type: 'column'
+                                    },
+                                    title: {
+                                        text: ''
+                                    },
+                                    subtitle: {
+                                        text: ''
+                                    },
+                                    exporting: false,
+                                    xAxis: {
+                                        type: 'category',
+                                        labels: {
+                                            rotation: -45,
+                                            style: {
+                                                fontSize: '13px',
+                                                fontFamily: 'Verdana, sans-serif'
+                                            }
+                                        }
+                                    },
+                                    yAxis: {
+                                        min: 0,
+                                        title: {
+                                            text: ''
+                                        }
+                                    },
+                                    legend: {
+                                        enabled: false
+                                    },
+                                    tooltip: {
+                                        pointFormat: 'Stock: <b>{point.y:.0f}</b>'
+                                    },
+                                    series: [{
+                                        colorByPoint: true,
+                                        name: 'Population',
+                                        data: request,
+                                        dataLabels: {
+                                            enabled: true,
+                                            rotation: -90,
+                                            color: '#FFFFFF',
+                                            align: 'right',
+                                            format: '{point.y:.0f}',
+                                            y: 50,
+                                            style: {
+                                                fontSize: '13px',
+                                                fontFamily: 'Verdana, sans-serif'
+                                            }
+                                        }
+                                    }]
+                                });
+                                return false;
+                            }
+                            message_error(request.error);
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            message_error(errorThrown + ' ' + textStatus);
+                        }
+                    });
+                },
+                getPurchasesAndSales: function () {
+                    $.ajax({
+                        url: pathname,
+                        type: 'POST',
+                        headers: {
+                            'X-CSRFToken': csrftoken
+                        },
+                        data: {
+                            'action': 'get_graph_purchases_sales'
+                        },
+                        dataType: 'json',
+                        success: function (request) {
+                            if (!request.hasOwnProperty('error')) {
+                                Highcharts.chart('chart_purchase_sale', {
+                                    chart: {
+                                        type: 'line'
+                                    },
+                                    title: {
+                                        text: ''
+                                    },
+                                    subtitle: {
+                                        text: ''
+                                    },
+                                    exporting: false,
+                                    xAxis: {
+                                        categories: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+                                    },
+                                    yAxis: {
+                                        title: {
+                                            text: ''
+                                        }
+                                    },
+                                    plotOptions: {
+                                        line: {
+                                            dataLabels: {
+                                                enabled: true
+                                            },
+                                            enableMouseTracking: false
+                                        }
+                                    },
+                                    series: request
+                                });
+                                return false;
+                            }
+                            message_error(request.error);
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            message_error(errorThrown + ' ' + textStatus);
+                        }
+                    });
+                },
+            };
+
+            $(function () {
+                chart.getStockProducts();
+                chart.getStockResources();
+                chart.getPurchasesAndSales();
+            });
+        </script>
+    {% endif %}
+{% endblock %}

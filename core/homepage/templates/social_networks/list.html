@@ -1,0 +1,18 @@
+{% extends 'list.html' %}
+{% load static %}
+{% block head_list %}
+    <script src="{% static 'social_networks/js/list.js' %}"></script>
+{% endblock %}
+
+{% block columns %}
+    <th>Número</th>
+    <th>Enlace</th>
+    <th>Código css</th>
+    <th>Icon</th>
+    <th>Estado</th>
+    <th class="text-center">Opciones</th>
+{% endblock %}
+
+{% block javascript_list %}
+
+{% endblock %}
